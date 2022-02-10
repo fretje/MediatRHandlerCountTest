@@ -8,22 +8,22 @@ builder.Services.AddMediatR(typeof(Program));
 
 WebApplication? app = builder.Build();
 
-app.MapGet("/somethingHappened", (IPublisher publisher, HandlerCounter handlerCounter) =>
+app.MapGet("/somethingHappened", async (IPublisher publisher, HandlerCounter handlerCounter) =>
 {
-    publisher.Publish(new EventNotification<SomethingHappenedEvent>(new SomethingHappenedEvent()));
+    await publisher.Publish(new EventNotification<SomethingHappenedEvent>(new SomethingHappenedEvent()));
     return handlerCounter;
 });
 
-app.MapGet("/simple", (IPublisher publisher, HandlerCounter handlerCounter) =>
+app.MapGet("/simple", async (IPublisher publisher, HandlerCounter handlerCounter) =>
 {
-    publisher.Publish(new SimpleNotification());
+    await publisher.Publish(new SimpleNotification());
     return handlerCounter;
 });
 
-app.MapGet("/both", (IPublisher publisher, HandlerCounter handlerCounter) =>
+app.MapGet("/both", async (IPublisher publisher, HandlerCounter handlerCounter) =>
 {
-    publisher.Publish(new EventNotification<SomethingHappenedEvent>(new SomethingHappenedEvent()));
-    publisher.Publish(new SimpleNotification());
+    await publisher.Publish(new EventNotification<SomethingHappenedEvent>(new SomethingHappenedEvent()));
+    await publisher.Publish(new SimpleNotification());
     return handlerCounter;
 });
 
